@@ -1,14 +1,16 @@
+import 'package:statistics/src/weighted_data.dart';
+
 /// Computes the mean of the data set.
-double mean({required List<double> dataSet}) {
+num mean({required List<num> dataSet}) {
   return dataSet.isNotEmpty
-      ? dataSet.fold<double>(
+      ? dataSet.fold<num>(
               0, (previousValue, element) => previousValue + element) /
           dataSet.length
       : 0;
 }
 
 /// Computes the median of the data set.
-double median({required List<double> dataSet}) {
+num median({required List<num> dataSet}) {
   if (dataSet.isEmpty) return 0;
 
   dataSet.sort();
@@ -20,8 +22,8 @@ double median({required List<double> dataSet}) {
 }
 
 /// Computes the mode of the data set.
-double mode({required List<double> dataSet}) {
-  double maxValue = 0;
+num mode({required List<num> dataSet}) {
+  num maxValue = 0;
   int maxCount = 0;
 
   dataSet.forEach((value) {
@@ -38,4 +40,13 @@ double mode({required List<double> dataSet}) {
   });
 
   return maxValue;
+}
+
+/// Computes the weighted mean of the data set.
+num weightedMean({required List<WeightedData> data}) {
+  var numerator = data.fold<num>(
+      0, (previous, element) => previous + (element.value * element.weight));
+  var denominator =
+      data.fold<num>(0, (previous, element) => previous + element.weight);
+  return data.isNotEmpty ? numerator / denominator : 0;
 }
